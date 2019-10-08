@@ -23,19 +23,18 @@ public class Stack implements  IStack{
     }
 
     @Override
-    public void AddElement(int _el) {
+    public void AddElement(int _el) throws Exception {
         if (top < MaxSize){
-            top++;
+            data[++top] =_el;
+        }   else {
+            throw new Exception("Стек переполнен!");
         }
-        else {
-            top=-1;
-        }
-        data[++top] = _el;
     }
 
     @Override
     public void RemoveElement() {
-        top--;
+        if (top>0)
+            top--;
     }
 
     @Override

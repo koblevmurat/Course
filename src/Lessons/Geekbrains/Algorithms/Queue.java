@@ -11,7 +11,7 @@ public class Queue implements IQueue {
         this.MaxSize = _MaxSize;
         data = new int[MaxSize];
         this.first = -1;
-        this.last = 0;
+        this.last = -1;
     }
 
     @Override
@@ -26,24 +26,32 @@ public class Queue implements IQueue {
 
     @Override
     public void AddElement(int _el) {
-        if (last < MaxSize){
+        if (last < MaxSize -1){
             data[++last] = _el;
+            if (first<0){
+                first=0;
+            }
         }
     }
 
     @Override
     public void RemoveElement() {
-        for (int i = last; i > first; i--){
-            if (i ==0 ){
-                break;
+        if (last > first) {
+            for (int i = first; i < last; i++) {
+                data[i] = data[i + 1];
             }
-           data[i-1] = data[i];
+            last--;
+        } else {
+            first = -1;
+            last = -1;
         }
-        last --;
     }
 
     @Override
     public int GetCurrent() throws Exception {
-        return data[first];
+        if (first<0){
+            throw new Exception("Стек не создан");
+        }
+          return data[first];
     }
 }
