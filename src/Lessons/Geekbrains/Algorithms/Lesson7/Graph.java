@@ -10,8 +10,10 @@ public class Graph {
     private int[][] adjMat;
     private int size;
     private Stack stack;
+    private boolean SrchLbl;
 
     public Graph(){
+        SrchLbl = false;
         stack = new Stack(MAX_VERTS);
         vertexList = new Vertex[MAX_VERTS];
         adjMat = new int[MAX_VERTS][MAX_VERTS];
@@ -55,35 +57,43 @@ public class Graph {
             vertexList[i].wasVisited = false;
     }
 
+    private void UnFlagVertx(){
+        for(int i=0; i<size; i++) // Сброс флагов
+            vertexList[i].wasVisited = false;
+    }
+
     public void ShortPath_bfs(char label){
+
         int v0 = 0;
+
+
         if (vertexList[v0].label == label){
 
-            displayVertex(v0);
+            displayVertex(v0); System.out.print(" --> ");
             return;
         }
         LinkedList<Integer> queue = new LinkedList<>();
-        LinkedList<Integer> MyPath = new LinkedList<>();
-        MyPath.addLast(v0);
+
         vertexList[0].wasVisited = true;
-        //displayVertex(0);
+
         queue.addLast(0); // Вставка в конец очереди
         int v2;
         while(!queue.isEmpty()){
-               int v1 = queue.remove();
-            displayVertex(v1);
+
+            int v1 = queue.remove();
+
             while((v2=getAdjUnvisitedVertex(v1)) != -1){
                 vertexList[v2].wasVisited = true; // Пометка
                 if (label == vertexList[v2].label) {
-                    System.out.print("Точка пути найдена: ");
-                    displayLinkedVertex(v1, v2);System.out.print(" ");// Вывод
+                    UnFlagVertx();
+                    ShortPath_bfs(vertexList[v1].label);
+                    displayVertex(v2); System.out.print(", ");// Вывод
                     return;
                 }
-
-                displayLinkedVertex(v1, v2);System.out.print(", ");// Вывод
+                //displayLinkedVertex(v1, v2);System.out.print(", ");// Вывод
                 queue.addLast(v2);
             }
-            System.out.println();
+
         }
         for(int i=0; i<size; i++) // Сброс флагов
             vertexList[i].wasVisited = false;
@@ -119,7 +129,7 @@ public class Graph {
     }
 
     public void displayVertex(int vertex){
-        System.out.println(vertexList[vertex].label);
+        System.out.print(vertexList[vertex].label);
     }
 
     public void displayLinkedVertex(int vertex1, int vertex2){
