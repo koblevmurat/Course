@@ -46,13 +46,13 @@ public class HashTable {
             int hashVal = hashFunc(key);
             int stepSize = hashFuncDouble(key);
             if (hashArr[hashVal]!=null){
-                for (Item itm :
-                        hashArr[hashVal]) {
+                for (int i =0; i < hashArr[hashVal].size(); i ++) {
+                    Item itm = hashArr[hashVal].get(i);
                     if (item.getKey()==itm.getKey()) //такое значение уже записано
                         return;
 
                     if (itm != null && itm.getKey() == -1) {  //если есть инициализированный элемент помеченный на удаление, то запишем в него
-                        itm = item;
+                        hashArr[hashVal].set(i, item);
                         return;
                     }
                 }
@@ -72,12 +72,11 @@ public class HashTable {
         public Item delete(int key){
             int hashVal = hashFunc(key);
             int stepSize = hashFuncDouble(key);
-            while (hashArr[hashVal] != null) {
-                for (Item itm :
-                        hashArr[hashVal]) {
-                    if (itm != null && itm.getKey() == key) {  //&& hashArr[hashVal].getKey() != -1)
-                        Item temp = itm;
-                        itm = nonItem;
+            if (hashArr[hashVal] != null) {
+                for (int i =0; i < hashArr[hashVal].size(); i ++) {
+                    if (hashArr[hashVal].get(i).getKey() == key) {  //&& hashArr[hashVal].getKey() != -1)
+                        Item temp = hashArr[hashVal].get(i);
+                        hashArr[hashVal].set(i, nonItem);
                         return temp;
                     }
                 }
@@ -85,9 +84,10 @@ public class HashTable {
                     Item temp = hashArr[hashVal];
                     hashArr[hashVal] = nonItem;
                     return temp;
-                }*/
-                hashVal+=stepSize;
+                              hashVal+=stepSize;
                 hashVal%=arrSize;
+                }*/
+
             }
             return null;
         }
@@ -95,18 +95,17 @@ public class HashTable {
         public Item find(int key){
             int hashVal = hashFunc(key);
             int stepSize = hashFuncDouble(key);
-            while (hashArr[hashVal] != null) {
+            if (hashArr[hashVal] != null) {
                 for (Item itm :
                         hashArr[hashVal]) {
-                    if (itm != null && itm.getKey() == key) {  //&& hashArr[hashVal].getKey() != -1)
+                    if (itm.getKey() == key) {  //&& hashArr[hashVal].getKey() != -1)
                         return itm;
                     }
                 }
                /* if (hashArr[hashVal].getKey() == key){
-                    return hashArr[hashVal];
-                }*/
-                hashVal+=stepSize;
+                    return hashArr[hashVal];hashVal+=stepSize;
                 hashVal%=arrSize;
+                }*/
             }
             return null;
         }
