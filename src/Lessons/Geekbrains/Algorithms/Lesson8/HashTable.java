@@ -3,6 +3,7 @@ package Lessons.Geekbrains.Algorithms.Lesson8;
 import java.util.LinkedList;
 import java.util.List;
 
+//изменены элементы хеш таблицы для реализации метода цепочек
 public class HashTable {
         private List<Item>[] hashArr;
         private int arrSize;
